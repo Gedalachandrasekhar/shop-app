@@ -1,55 +1,93 @@
+import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
+import api from "../services/api";
 
 export default function EmployeeDashboard() {
+  const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadComplaints = async () => {
+    try {
+      const res = await api.get("/employee/complaints");
+      setComplaints(res.data);
+    } catch (err) {
+      console.error("Failed to load complaints", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateStatus = async (complaintId, status) => {
+    try {
+      await api.put(`/complaints/${complaintId}/status`, { status });
+      loadComplaints();
+    } catch (err) {
+      alert("Failed to update status");
+    }
+  };
+
+  useEffect(() => {
+    loadComplaints();
+  }, []);
+
   return (
     <DashboardLayout role="EMPLOYEE">
       <h1 className="text-2xl font-bold mb-6">Employee Dashboard</h1>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-semibold">Assigned Complaints</h2>
-          <p className="text-2xl font-bold">8</p>
+      {loading ? (
+        <p>Loading complaints...</p>
+      ) : complaints.length === 0 ? (
+        <p className="text-gray-500">No complaints assigned</p>
+      ) : (
+        <div className="bg-white rounded shadow p-4">
+          <table className="w-full text-sm border">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="p-2 border">ID</th>
+                <th className="p-2 border">Type</th>
+                <th className="p-2 border">Description</th>
+                <th className="p-2 border">Status</th>
+                <th className="p-2 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {complaints.map((c) => (
+                <tr key={c.complaint_id} className="text-center">
+                  <td className="p-2 border">
+                    {c.complaint_id.slice(0, 6)}
+                  </td>
+                  <td className="p-2 border">{c.complaint_type}</td>
+                  <td className="p-2 border">{c.description}</td>
+                  <td className="p-2 border">{c.status}</td>
+                  <td className="p-2 border space-x-2">
+                    {c.status === "ASSIGNED" && (
+                      <button
+                        onClick={() =>
+                          updateStatus(c.complaint_id, "IN_PROGRESS")
+                        }
+                        className="bg-yellow-500 text-white px-2 py-1 rounded"
+                      >
+                        Start
+                      </button>
+                    )}
+
+                    {c.status === "IN_PROGRESS" && (
+                      <button
+                        onClick={() =>
+                          updateStatus(c.complaint_id, "COMPLETED")
+                        }
+                        className="bg-green-600 text-white px-2 py-1 rounded"
+                      >
+                        Complete
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-semibold">In Progress</h2>
-          <p className="text-2xl font-bold text-yellow-600">3</p>
-        </div>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-semibold">Completed</h2>
-          <p className="text-2xl font-bold text-green-600">5</p>
-        </div>
-      </div>
-
-      {/* Assigned Complaints Table */}
-      <div className="bg-white rounded shadow p-4">
-        <h2 className="font-semibold mb-3">Assigned Complaints</h2>
-
-        <table className="w-full text-sm border">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-2 border">Complaint ID</th>
-              <th className="p-2 border">Customer</th>
-              <th className="p-2 border">Type</th>
-              <th className="p-2 border">Status</th>
-              <th className="p-2 border">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="text-center">
-              <td className="p-2 border">CMP014</td>
-              <td className="p-2 border">Ravi</td>
-              <td className="p-2 border">Store</td>
-              <td className="p-2 border text-yellow-600">Assigned</td>
-              <td className="p-2 border text-blue-600 cursor-pointer">
-                Update
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      )}
     </DashboardLayout>
   );
 }

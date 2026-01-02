@@ -9,7 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const backendRole = res.data.role?.toUpperCase();
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -33,7 +33,7 @@ export default function Login() {
         });
       }
 
-      // ✅ ALWAYS TAKE ROLE FROM BACKEND
+      // ✅ ROLE FROM BACKEND ONLY
       const backendRole = res.data.role?.toUpperCase();
 
       if (!backendRole) {
@@ -57,7 +57,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded shadow w-96">
         <h2 className="text-xl font-bold mb-4">Login</h2>
 
