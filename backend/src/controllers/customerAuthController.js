@@ -3,9 +3,14 @@ const { generateToken } = require("../utils/jwt");
 exports.customerLogin = async (req, res) => {
   // after customer is fetched or created
 
-  const token = generateToken({
-    customerId: customer.customer_id, // 🔥 REQUIRED
-    role: "CUSTOMER",
+  generateToken({
+  customerId: customer.customer_id,
+  role: "CUSTOMER",
+  });
+
+  generateToken({
+  userId: user.user_id,
+  role: user.role_name,
   });
 
   res.json({

@@ -1,6 +1,12 @@
 exports.createComplaint = async (req, res) => {
   const { complaintType, description } = req.body;
   const customerId = req.user.customerId;
+  const ALLOWED_TYPES = ["STORE", "OUTDOOR"];
+
+  if (!ALLOWED_TYPES.includes(complaintType)) {
+    return res.status(400).json({ error: "Invalid complaint type" });
+  }
+
 
   // 🔴 HARD CHECK (VERY IMPORTANT)
   if (!customerId) {

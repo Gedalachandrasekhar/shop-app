@@ -13,7 +13,7 @@ export default function RegisterComplaint({ onSuccess }) {
       });
       alert("Complaint registered successfully");
       setDescription("");
-      onSuccess(); // refresh list
+     onSuccess && onSuccess();  // refresh list
     } catch {
       alert("Failed to register complaint");
     }

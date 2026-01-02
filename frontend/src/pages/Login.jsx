@@ -9,7 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-
+  const backendRole = res.data.role?.toUpperCase();
   const navigate = useNavigate();
   const { login } = useAuth();
 

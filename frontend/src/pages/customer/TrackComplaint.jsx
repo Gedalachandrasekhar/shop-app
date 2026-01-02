@@ -21,9 +21,9 @@ export default function TrackComplaint({ complaintId }) {
   }, [complaintId]);
 
   const currentIndex =
-    history.length > 0
-      ? STATUS_ORDER.indexOf(history[history.length - 1].status)
-      : 0;
+  history.length > 0
+    ? Math.max(0, STATUS_ORDER.indexOf(history.at(-1).status))
+    : 0;
 
   return (
     <div className="bg-white p-6 rounded shadow mt-6">

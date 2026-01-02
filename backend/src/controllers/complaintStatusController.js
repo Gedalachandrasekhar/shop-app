@@ -8,6 +8,9 @@ exports.updateStatus = async (req, res) => {
 
   try {
     // Update main complaint table
+    if (!["EMPLOYEE", "MANAGER", "ADMIN"].includes(req.user.role)) {
+    return res.status(403).json({ error: "Unauthorized" });
+    }
     await pool.query(
       `UPDATE complaints
        SET status = $1, updated_at = CURRENT_TIMESTAMP

@@ -45,7 +45,7 @@ export default function CustomerDashboard() {
             {complaints.map((c) => (
               <tr key={c.complaint_id} className="text-center">
                 <td className="p-2 border">
-                  {c.complaint_id.slice(0, 6)}
+                   {c.complaint_id?.slice(0, 6) || "N/A"}
                 </td>
                 <td className="p-2 border">{c.complaint_type}</td>
                 <td className="p-2 border">{c.status}</td>
