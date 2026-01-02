@@ -17,6 +17,7 @@ export default function RegisterComplaint({ onSuccess }) {
     } catch {
       alert("Failed to register complaint");
     }
+    if (!description.trim()) return alert("Description required");
   };
 
   return (

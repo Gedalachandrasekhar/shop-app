@@ -26,9 +26,9 @@ exports.employeeLogin = async (req, res) => {
     }
 
     const token = generateToken({
-      userId: user.user_id,
-      role: user.role_name,
-    });
+  id: user.user_id,   // ✅ use id
+  role: user.role_name,
+});
 
     res.json({
       token,

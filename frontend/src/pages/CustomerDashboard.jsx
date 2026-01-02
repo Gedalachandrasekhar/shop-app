@@ -18,8 +18,8 @@ export default function CustomerDashboard() {
   };
 
   useEffect(() => {
-    loadComplaints();
-  }, []);
+  setSelectedComplaintId(null);
+}, [complaints]);
 
   return (
     <DashboardLayout role="CUSTOMER">

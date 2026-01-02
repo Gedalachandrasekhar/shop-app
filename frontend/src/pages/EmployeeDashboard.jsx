@@ -26,6 +26,14 @@ export default function EmployeeDashboard() {
     }
   };
 
+  const usePart = async (complaintId, partId) => {
+  await api.post(`/parts/${complaintId}/use`, {
+    partId,
+    quantity: 1,
+  });
+  alert("Part used");
+};
+
   useEffect(() => {
     loadComplaints();
   }, []);

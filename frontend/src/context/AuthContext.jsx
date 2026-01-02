@@ -1,13 +1,19 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
+  const [user, setUser] = useState(null);
+
+  // 🔁 Restore auth on page refresh
+  useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-    return token ? { token, role } : null;
-  });
+
+    if (token && role) {
+      setUser({ token, role });
+    }
+  }, []);
 
   const login = (token, role) => {
     localStorage.setItem("token", token);
@@ -16,7 +22,8 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     setUser(null);
   };
 

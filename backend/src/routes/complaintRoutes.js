@@ -24,6 +24,7 @@ router.get(
 router.get(
   "/:id",
   authenticate,
+  authorizeRoles("CUSTOMER", "EMPLOYEE", "MANAGER", "ADMIN"),
   complaintController.getComplaintById
 );
 
@@ -33,6 +34,7 @@ const statusController = require("../controllers/complaintStatusController");
 router.put(
   "/:complaintId/status",
   authenticate,
+  authorizeRoles("EMPLOYEE", "MANAGER", "ADMIN"),
   statusController.updateStatus
 );
 
