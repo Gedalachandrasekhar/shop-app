@@ -5,6 +5,8 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Inventory from "./pages/Inventory";
+import Reports from "./pages/Reports";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -49,6 +51,23 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/inventory"
+  element={
+    <ProtectedRoute role={["ADMIN", "MANAGER"]}>
+      <Inventory />
+    </ProtectedRoute>
+  }
+/>
+
+        <Route
+  path="/reports"
+  element={
+    <ProtectedRoute role="ADMIN">
+      <Reports />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </BrowserRouter>
   );

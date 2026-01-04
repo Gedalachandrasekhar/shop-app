@@ -15,10 +15,12 @@ export default function Sidebar({ role }) {
     MANAGER: [
       { name: "Dashboard", path: "/manager" },
       { name: "Inventory", path: "/inventory" },
+      { name: "Reports", path: "/reports" },
     ],
     ADMIN: [
       { name: "Dashboard", path: "/admin" },
       { name: "Inventory", path: "/inventory" },
+      { name: "Reports", path: "/reports" },
     ],
   };
 

@@ -11,6 +11,7 @@ const managerRoutes = require("./routes/managerRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
 const partUsageRoutes = require("./routes/partUsageRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/api/manager", managerRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/parts", partUsageRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/reports", reportRoutes);
 
 app.get("/", (req, res) => {
   res.send("Employee Service API running...");
