@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -11,44 +11,33 @@ export default function Login() {
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, role: authRole } = useAuth(); // 👈 read role from context
 
   const handleLogin = async () => {
     try {
       let res;
 
-      // CUSTOMER LOGIN
       if (role === "CUSTOMER") {
         res = await api.post("/auth/customer/login", {
           name,
           phone,
           address,
         });
-      }
-      // EMPLOYEE / MANAGER / ADMIN LOGIN
-      else {
+      } else {
         res = await api.post("/auth/employee/login", {
           phone,
           password,
         });
       }
 
-      // ✅ ROLE FROM BACKEND ONLY
       const backendRole = res.data.role?.toUpperCase();
-
       if (!backendRole) {
         alert("Role not received from server");
         return;
       }
 
-      // ✅ SAVE TOKEN + ROLE
+      // ✅ ONLY save auth here
       login(res.data.token, backendRole);
-
-      // ✅ REDIRECT
-      if (backendRole === "CUSTOMER") navigate("/customer");
-      else if (backendRole === "EMPLOYEE") navigate("/employee");
-      else if (backendRole === "MANAGER") navigate("/manager");
-      else if (backendRole === "ADMIN") navigate("/admin");
 
     } catch (err) {
       console.error(err);
@@ -56,12 +45,19 @@ export default function Login() {
     }
   };
 
+  // 🔥 REDIRECT ONLY AFTER AUTH ROLE IS SET
+  useEffect(() => {
+    if (authRole === "CUSTOMER") navigate("/customer", { replace: true });
+    else if (authRole === "EMPLOYEE") navigate("/employee", { replace: true });
+    else if (authRole === "MANAGER") navigate("/manager", { replace: true });
+    else if (authRole === "ADMIN") navigate("/admin", { replace: true });
+  }, [authRole, navigate]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded shadow w-96">
         <h2 className="text-xl font-bold mb-4">Login</h2>
 
-        {/* Role selector */}
         <select
           className="w-full border p-2 mb-3"
           value={role}
@@ -73,7 +69,6 @@ export default function Login() {
           <option value="ADMIN">Admin</option>
         </select>
 
-        {/* CUSTOMER FIELDS */}
         {role === "CUSTOMER" && (
           <>
             <input
@@ -95,7 +90,6 @@ export default function Login() {
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        {/* PASSWORD */}
         {role !== "CUSTOMER" && (
           <input
             type="password"
