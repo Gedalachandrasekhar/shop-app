@@ -28,16 +28,20 @@ export default function Login() {
           phone,
           password,
         });
-      }
+      } 
 
-      const backendRole = res.data.role?.toUpperCase();
+     console.log("res->", res.data);
+
+      const backendRole = res.data.role?.toUpperCase(); 
+      console.log("backendRole->",backendRole);
       if (!backendRole) {
         alert("Role not received from server");
         return;
       }
 
       // ✅ ONLY save auth here
-      login(res.data.token, backendRole);
+      login(res.data.token, backendRole); 
+      navigate(`/${backendRole.toLowerCase()}`, { replace: true });
 
     } catch (err) {
       console.error(err);
@@ -45,14 +49,7 @@ export default function Login() {
     }
   };
 
-  // 🔥 REDIRECT ONLY AFTER AUTH ROLE IS SET
-  useEffect(() => {
-    if (authRole === "CUSTOMER") navigate("/customer", { replace: true });
-    else if (authRole === "EMPLOYEE") navigate("/employee", { replace: true });
-    else if (authRole === "MANAGER") navigate("/manager", { replace: true });
-    else if (authRole === "ADMIN") navigate("/admin", { replace: true });
-  }, [authRole, navigate]);
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded shadow w-96">

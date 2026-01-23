@@ -3,7 +3,8 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar({ role }) {
   const { logout } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  console.log("inside Sidebar");
 
   const menu = {
     CUSTOMER: [

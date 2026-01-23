@@ -22,7 +22,7 @@ export default function CustomerDashboard() {
 }, [complaints]);
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout role={"CUSTOMER"}>
       <h1 className="text-2xl font-bold mb-6">Customer Dashboard</h1>
 
       {/* REGISTER COMPLAINT */}
