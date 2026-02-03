@@ -22,17 +22,10 @@ export default function EmployeeDashboard() {
       await api.put(`/complaints/${complaintId}/status`, { status });
       loadComplaints();
     } catch (err) {
+      console.error("Failed to update status", err);
       alert("Failed to update status");
     }
   };
-
-  const usePart = async (complaintId, partId) => {
-  await api.post(`/parts/${complaintId}/use`, {
-    partId,
-    quantity: 1,
-  });
-  alert("Part used");
-};
 
   useEffect(() => {
     loadComplaints();

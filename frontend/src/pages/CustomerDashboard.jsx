@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import RegisterComplaint from "./customer/RegisterComplaint";
 import TrackComplaint from "./customer/TrackComplaint";
@@ -12,14 +12,11 @@ export default function CustomerDashboard() {
     try {
       const res = await api.get("/complaints/my");
       setComplaints(res.data);
+      setSelectedComplaintId(null);
     } catch (err) {
       console.error("Failed to load complaints", err);
     }
   };
-
-  useEffect(() => {
-  setSelectedComplaintId(null);
-}, [complaints]);
 
   return (
     <DashboardLayout role={"CUSTOMER"}>

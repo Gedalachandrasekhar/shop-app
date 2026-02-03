@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 
 export default function Login() {
   const [role, setRole] = useState("CUSTOMER");
@@ -11,7 +11,7 @@ export default function Login() {
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
-  const { login, role: authRole } = useAuth(); // 👈 read role from context
+  const { login } = useAuth(); // 👈 read role from context
 
   const handleLogin = async () => {
     try {
